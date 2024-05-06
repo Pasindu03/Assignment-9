@@ -1,39 +1,40 @@
-const lights = document.querySelectorAll('#lights > div');
-const startButton = document.getElementById('start');
-const endButton = document.getElementById('end');
+var current_light = -1;
+var current_direction = "RIGHT";
+var light_count = 7;
 
-// Dark colors and light colors arrays
-const darkColors = ['#c41611', '#fb3e38', '#ff6b67', '#ffa29f', '#EEEEEE'];
-const lightColors = ['#EEEEEE', '#ffa29f', '#ff6b67', '#fb3e38', '#c41611'];
-
-let isMovingRight = true; // Flag to track a direction of movement
-let intervalId; // ID of the interval timer
-
-// Function to start the movement
-function startMovement() {
-    let colors = isMovingRight ? darkColors : lightColors;
-
-    intervalId = setInterval(() => {
-        if (isMovingRight) {
-            // Move colors to the right
-            colors.unshift(colors.pop());
-        } else {
-            // Move colors to the left
-            colors.push(colors.shift());
+const updatePanel=()=>{
+    $(".light").css("background", "white");
+    if (current_direction === "RIGHT"){
+        current_light++;
+        $(".light").eq(current_light).css("background", "red");
+        if (current_light-1 >= 0){
+            $(".light").eq(current_light-1).css("background", "pink");
         }
 
-        // Update the background color of each light
-        lights.forEach((light, index) => {
-            light.style.backgroundColor = colors[index];
-        });
-    }, 100);
+
+        if (current_light === light_count-1){
+            current_direction ="LEFT";
+        }
+    }else {
+        current_light--;
+        $(".light").eq(current_light).css("background", "red");
+        $(".light").eq(current_light+1).css("background", "pink");
+        if (current_light === 0){
+            current_direction = 'RIGHT';
+        }
+    }
 }
 
-// Function to stop the movement
-function stopMovement() {
+let intervalId = null;
+$("#start").on('click', ()=>{
+    if (intervalId === null){
+        intervalId=setInterval(updatePanel,100);
+        $('audio')[0].play();
+    }
+});
+
+$("#stop").on('click', ()=>{
     clearInterval(intervalId);
-}
-
-// Event listeners for start and stop buttons
-startButton.addEventListener('click', startMovement);
-endButton.addEventListener('click', stopMovement);
+    intervalId = null;
+    $('audio')[0].pause();
+});
