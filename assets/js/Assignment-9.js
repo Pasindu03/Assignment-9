@@ -6,9 +6,9 @@ const updatePanel=()=>{
     $(".light").css("background", "white");
     if (current_direction === "RIGHT"){
         current_light++;
-        $(".light").eq(current_light).css("background", "red");
+        $(".light").eq(current_light).css("background", "#ff0000");
         if (current_light-1 >= 0){
-            $(".light").eq(current_light-1).css("background", "pink");
+            $(".light").eq(current_light-1).css("background", "#ff6363");
         }
 
 
@@ -17,8 +17,8 @@ const updatePanel=()=>{
         }
     }else {
         current_light--;
-        $(".light").eq(current_light).css("background", "red");
-        $(".light").eq(current_light+1).css("background", "pink");
+        $(".light").eq(current_light).css("background", "#ff0000");
+        $(".light").eq(current_light+1).css("background", "#ff6363");
         if (current_light === 0){
             current_direction = 'RIGHT';
         }
